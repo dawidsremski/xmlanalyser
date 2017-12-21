@@ -3,7 +3,7 @@ package pl.com.sremski.domain;
 import lombok.Data;
 
 @Data
-class Details {
+public class Details {
 
     private String firstPost;
     private String lastPost;
