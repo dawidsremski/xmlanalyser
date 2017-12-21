@@ -2,8 +2,8 @@ package pl.com.sremski.service;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
 
 public interface XMLService {
-    Object readFromURL(URL url) throws IOException, XMLStreamException;
+    Object readFromInputStream(InputStream inputStream) throws IOException, XMLStreamException;
 }

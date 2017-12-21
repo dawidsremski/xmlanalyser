@@ -9,7 +9,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -19,7 +18,7 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 public class XMLAnalysisService implements XMLService {
 
     @Override
-    public Analysis readFromURL(URL url) throws IOException, XMLStreamException {
+    public Analysis readFromInputStream(InputStream inputStream) throws IOException, XMLStreamException {
 
         LocalDateTime analyseDate = LocalDateTime.now();
 
@@ -29,8 +28,6 @@ public class XMLAnalysisService implements XMLService {
         int acceptedPosts = 0;
         int totalPosts = 0;
         Double scoreSum = 0.0;
-
-        InputStream inputStream = url.openStream();
 
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(inputStream);

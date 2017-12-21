@@ -52,7 +52,7 @@ public class Analyze {
         Analysis analysis = null;
 
         try {
-            analysis = xmlAnalysisService.readFromURL(XMLUrl);
+            analysis = xmlAnalysisService.readFromInputStream(XMLUrl.openStream());
         } catch (IOException | XMLStreamException e) {
             e.printStackTrace();
         }
