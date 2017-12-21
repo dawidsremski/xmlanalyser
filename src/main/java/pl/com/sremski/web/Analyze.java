@@ -54,7 +54,7 @@ public class Analyze {
         try {
             analysis = xmlAnalysisService.readFromInputStream(XMLUrl.openStream());
         } catch (IOException | XMLStreamException e) {
-            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(analysis, HttpStatus.OK);

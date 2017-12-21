@@ -162,7 +162,7 @@ public class XMLAnalysisServiceTest {
     }
 
     @Test(expected = XMLStreamException.class)
-    public void XMLAnalysisTESTInvalidXML() throws IOException, XMLStreamException {
+    public void XMLAnalysisTestInvalidXML() throws IOException, XMLStreamException {
         //given
         exampleXML = "asfsa98fyds987yf";
 
