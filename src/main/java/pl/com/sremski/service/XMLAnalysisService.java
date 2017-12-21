@@ -12,7 +12,7 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static java.time.temporal.ChronoUnit.SECONDS;
+import static java.time.temporal.ChronoUnit.MILLIS;
 
 @Service
 public class XMLAnalysisService implements XMLService {
@@ -80,7 +80,7 @@ public class XMLAnalysisService implements XMLService {
         analysis.setDetails(details);
 
         analysis.setAnalyseDate(analyseDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-        analysis.setAnalyseTime(analyseDate.until(LocalDateTime.now(), SECONDS));
+        analysis.setAnalyseTime((double) analyseDate.until(LocalDateTime.now(), MILLIS) / 1000);
 
         return analysis;
     }

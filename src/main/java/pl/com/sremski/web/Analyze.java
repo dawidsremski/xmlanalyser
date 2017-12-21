@@ -1,12 +1,13 @@
 package pl.com.sremski.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import pl.com.sremski.domain.Analysis;
 import pl.com.sremski.domain.XMLUrl;
 import pl.com.sremski.service.XMLAnalysisService;
@@ -18,10 +19,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 @RestController
+@EnableWebMvc
 public class Analyze {
 
-    @Autowired
-    private XMLAnalysisService xmlAnalysisService;
+    @Bean
+    public XMLAnalysisService xmlAnalysisService() {
+        return new XMLAnalysisService();
+    }
+
 
     @RequestMapping(value = "/analyze", method = RequestMethod.POST)
     public ResponseEntity<Analysis> analyze(@RequestBody XMLUrl url) {
@@ -52,7 +57,7 @@ public class Analyze {
         Analysis analysis = null;
 
         try {
-            analysis = xmlAnalysisService.readFromInputStream(XMLUrl.openStream());
+            analysis = xmlAnalysisService().readFromInputStream(XMLUrl.openStream());
         } catch (IOException | XMLStreamException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

@@ -6,6 +6,6 @@ import lombok.Setter;
 public class Analysis {
 
     @Setter @Getter private String analyseDate;
-    @Setter @Getter private long analyseTime;
+    @Setter @Getter private Double analyseTime;
     @Setter @Getter private Details details;
 }
