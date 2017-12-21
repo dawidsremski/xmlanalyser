@@ -24,8 +24,10 @@ public class XMLAnalysisService implements XMLService {
 
         Analysis analysis = new Analysis();
         Details details = new Details();
-        String date = null;
+        String lastPostDate = null;
+        boolean isElementPost = false;
         int acceptedPosts = 0;
+        int scoredPosts = 0;
         int totalPosts = 0;
         Double scoreSum = 0.0;
 
@@ -42,32 +44,39 @@ public class XMLAnalysisService implements XMLService {
 
                     String attributeName = xmlStreamReader.getAttributeName(i).toString();
 
-                    switch (attributeName) {
-                        case "Id":
-                            totalPosts++;
-                            break;
-                        case "AcceptedAnswerId":
-                            acceptedPosts++;
-                            break;
-                        case "Score":
-                            scoreSum += Integer.valueOf(xmlStreamReader.getAttributeValue(i));
-                            break;
-                        case "CreationDate":
-                            if (details.getFirstPost() == null) {
-                                details.setFirstPost(xmlStreamReader.getAttributeValue(i));
-                            }
-                            date = xmlStreamReader.getAttributeValue(i);
+                    if (attributeName.equals("Id")) {
+                        totalPosts++;
+                        isElementPost = true;
+                    }
+
+                    if (isElementPost) {
+                        switch (attributeName) {
+                            case "AcceptedAnswerId":
+                                acceptedPosts++;
+                                break;
+                            case "Score":
+                                scoreSum += Integer.valueOf(xmlStreamReader.getAttributeValue(i));
+                                scoredPosts++;
+                                break;
+                            case "CreationDate":
+                                if (totalPosts == 1) {
+                                    details.setFirstPost(xmlStreamReader.getAttributeValue(i));
+                                } else {
+                                    lastPostDate = xmlStreamReader.getAttributeValue(i);
+                                }
+                        }
                     }
                 }
+                isElementPost = false;
             }
         }
 
         xmlStreamReader.close();
 
-        details.setLastPost(date);
+        details.setLastPost((totalPosts == 1) ? details.getFirstPost() : lastPostDate);
         details.setTotalPosts(totalPosts);
         details.setTotalAcceptedPosts(acceptedPosts);
-        details.setAvgScore(scoreSum / totalPosts);
+        details.setAvgScore((scoredPosts == 0) ? null : scoreSum / scoredPosts);
         analysis.setDetails(details);
 
         analysis.setAnalyseDate(analyseDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
