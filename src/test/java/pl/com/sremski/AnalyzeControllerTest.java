@@ -1,9 +1,13 @@
 package pl.com.sremski;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockserver.client.server.MockServerClient;
+import org.mockserver.junit.MockServerRule;
+import org.mockserver.model.HttpRequest;
+import org.mockserver.model.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -14,9 +18,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import pl.com.sremski.web.Analyze;
 
-import static org.mockserver.model.HttpRequest.request;
-import static org.mockserver.model.HttpResponse.response;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -24,6 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class AnalyzeControllerTest {
 
+    @Rule
+    public MockServerRule mockServerRule = new MockServerRule(this, 1080);
     private MockMvc mockMvc;
 
     @Autowired
@@ -42,30 +47,55 @@ public class AnalyzeControllerTest {
     }
 
     @Test
-    public void AnalyzeControllerWrongURL() throws Exception {
+    public void AnalyzeControllerTestWrongURL() throws Exception {
         mockMvc.perform(post("/analyze").accept(MediaType.APPLICATION_JSON).
                 contentType(MediaType.APPLICATION_JSON).content("{\"url\" : \"f4fr43fdf\"}")).
                 andExpect(status().isBadRequest());
     }
 
     @Test
-    public void AnalyzeControllerNoUrlSpecified() throws Exception {
+    public void AnalyzeControllerTestNoUrlSpecified() throws Exception {
         mockMvc.perform(post("/analyze").accept(MediaType.APPLICATION_JSON).
                 contentType(MediaType.APPLICATION_JSON).content("f4fr43fdf")).
                 andExpect(status().isBadRequest());
     }
 
-    /*
     @Test
-    public void AnalyzeControllerAccessForbidden() throws Exception {
-
-        MockServerClient mockServer = new MockServerClient("localhost", 234);
-
-        mockServer.when(request().withMethod("GET").withPath("/getXML/")).respond(response().withStatusCode(403));
+    public void AnalyzeControllerTestAccessForbidden() throws Exception {
+        new MockServerClient("localhost", 1080).when(HttpRequest.request().
+                withPath("/forbidden-xml.xml").withMethod("HEAD")).
+                respond(HttpResponse.response().withStatusCode(403));
 
         mockMvc.perform(post("/analyze").accept(MediaType.APPLICATION_JSON).
-                contentType(MediaType.APPLICATION_JSON).content("{\"url\" : \"localhost:1080/getXML/\"}")).
+                contentType(MediaType.APPLICATION_JSON).
+                content("{ \"url\" : \"http://localhost:1080/forbidden-xml.xml\" }")).
                 andExpect(status().isForbidden());
     }
-    */
+
+    @Test
+    public void AnalyzeControllerTestXmlNotFound() throws Exception {
+        new MockServerClient("localhost", 1080).when(HttpRequest.request().
+                withPath("/no-such-xml-existing.xml").withMethod("HEAD")).
+                respond(HttpResponse.response().withStatusCode(404));
+
+        mockMvc.perform(post("/analyze").accept(MediaType.APPLICATION_JSON).
+                contentType(MediaType.APPLICATION_JSON).
+                content("{ \"url\" : \"http://localhost:1080/no-such-xml-existing.xml\" }")).
+                andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void AnalyzeControllerTestEverythingOK() throws Exception {
+
+        new MockServerClient("localhost", 1080).when(HttpRequest.request().
+                withPath("/correct-xml.xml")).
+                respond(HttpResponse.response().withBody("<posts></posts>").
+                        withStatusCode(200));
+
+        mockMvc.perform(post("/analyze").accept(MediaType.APPLICATION_JSON).
+                contentType(MediaType.APPLICATION_JSON).
+                content("{ \"url\" : \"http://localhost:1080/correct-xml.xml\" }")).
+                andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8)).
+                andExpect(status().isOk());
+    }
 }
