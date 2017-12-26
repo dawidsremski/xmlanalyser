@@ -81,7 +81,7 @@ public class XMLAnalysisService implements XMLService {
                 }
             }
         } catch (XMLStreamException e) {
-            log.debug(e.getMessage());
+            log.warn(e.getMessage());
             if (totalPosts < 1) throw e;
         }
 
