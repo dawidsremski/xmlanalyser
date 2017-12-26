@@ -1,4 +1,4 @@
-package pl.com.sremski.web;
+package pl.com.sremski.xmlanalyser.web;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import pl.com.sremski.domain.Analysis;
-import pl.com.sremski.domain.XMLUrl;
-import pl.com.sremski.service.XMLAnalysisService;
+import pl.com.sremski.xmlanalyser.domain.Analysis;
+import pl.com.sremski.xmlanalyser.domain.XMLUrl;
+import pl.com.sremski.xmlanalyser.service.XMLAnalysisService;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;

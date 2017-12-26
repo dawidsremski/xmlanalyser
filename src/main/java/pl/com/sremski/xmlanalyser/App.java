@@ -1,4 +1,4 @@
-package pl.com.sremski;
+package pl.com.sremski.xmlanalyser;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

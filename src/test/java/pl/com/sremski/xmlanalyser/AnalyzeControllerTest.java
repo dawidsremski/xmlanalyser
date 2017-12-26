@@ -1,4 +1,4 @@
-package pl.com.sremski;
+package pl.com.sremski.xmlanalyser;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,7 +16,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import pl.com.sremski.web.Analyze;
+import pl.com.sremski.xmlanalyser.web.Analyze;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;

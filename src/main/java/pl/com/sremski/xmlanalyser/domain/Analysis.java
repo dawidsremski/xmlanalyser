@@ -1,4 +1,4 @@
-package pl.com.sremski.domain;
+package pl.com.sremski.xmlanalyser.domain;
 
 import lombok.Getter;
 import lombok.Setter;

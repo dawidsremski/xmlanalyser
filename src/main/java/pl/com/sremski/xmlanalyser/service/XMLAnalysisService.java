@@ -1,10 +1,10 @@
-package pl.com.sremski.service;
+package pl.com.sremski.xmlanalyser.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
-import pl.com.sremski.domain.Analysis;
-import pl.com.sremski.domain.Details;
+import pl.com.sremski.xmlanalyser.domain.Analysis;
+import pl.com.sremski.xmlanalyser.domain.Details;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;

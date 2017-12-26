@@ -1,9 +1,9 @@
-package pl.com.sremski;
+package pl.com.sremski.xmlanalyser;
 
 import org.junit.Before;
 import org.junit.Test;
-import pl.com.sremski.domain.Analysis;
-import pl.com.sremski.service.XMLAnalysisService;
+import pl.com.sremski.xmlanalyser.domain.Analysis;
+import pl.com.sremski.xmlanalyser.service.XMLAnalysisService;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayInputStream;
