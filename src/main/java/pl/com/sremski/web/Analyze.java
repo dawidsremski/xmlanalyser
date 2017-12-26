@@ -27,14 +27,13 @@ public class Analyze {
         return new XMLAnalysisService();
     }
 
-
     @RequestMapping(value = "/analyze", method = RequestMethod.POST)
     public ResponseEntity<Analysis> analyze(@RequestBody XMLUrl url) {
 
-        URL XMLUrl;
+        URL xmlUrl;
 
         try {
-            XMLUrl = new URL(url.getUrl());
+            xmlUrl = new URL(url.getUrl());
         } catch (MalformedURLException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -42,7 +41,7 @@ public class Analyze {
         HttpURLConnection.setFollowRedirects(false);
 
         try {
-            HttpURLConnection httpURLConnection = (HttpURLConnection) XMLUrl.openConnection();
+            HttpURLConnection httpURLConnection = (HttpURLConnection) xmlUrl.openConnection();
             httpURLConnection.setRequestMethod("HEAD");
             httpURLConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 (.NET CLR 3.5.30729)");
             if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_FORBIDDEN)
@@ -54,10 +53,10 @@ public class Analyze {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        Analysis analysis = null;
+        Analysis analysis;
 
         try {
-            analysis = xmlAnalysisService().readFromInputStream(XMLUrl.openStream());
+            analysis = xmlAnalysisService().readFromInputStream(xmlUrl.openStream());
         } catch (IOException | XMLStreamException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

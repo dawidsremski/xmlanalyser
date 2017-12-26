@@ -7,7 +7,6 @@ import pl.com.sremski.service.XMLAnalysisService;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
@@ -16,17 +15,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class XMLAnalysisServiceTest {
 
     private XMLAnalysisService xmlAnalysisService;
-    private String exampleXML;
+    private String exampleXml;
 
     @Before
-    public void Before() {
+    public void before() {
         xmlAnalysisService = new XMLAnalysisService();
     }
 
     @Test
-    public void XMLAnalysisServiceTestTwoPosts() throws IOException, XMLStreamException {
+    public void xmlAnalysisServiceTestTwoPosts() throws XMLStreamException {
         //given
-        exampleXML = "<posts>" +
+        exampleXml = "<posts>" +
                 "<row Id=\"1\" " +
                 "AcceptedAnswerId=\"51\" " +
                 "CreationDate=\"2016-01-12T18:45:19.963\" " +
@@ -40,7 +39,7 @@ public class XMLAnalysisServiceTest {
                 "</posts>";
 
         //when
-        InputStream inputStream = new ByteArrayInputStream(exampleXML.getBytes(StandardCharsets.UTF_8));
+        InputStream inputStream = new ByteArrayInputStream(exampleXml.getBytes(StandardCharsets.UTF_8));
         Analysis analysis = xmlAnalysisService.readFromInputStream(inputStream);
 
         //then
@@ -51,9 +50,9 @@ public class XMLAnalysisServiceTest {
     }
 
     @Test
-    public void XMLAnalysisServiceFirstPostWithoutCreationDate() throws IOException, XMLStreamException {
+    public void xmlAnalysisServiceFirstPostWithoutCreationDate() throws XMLStreamException {
         //given
-        exampleXML = "<posts>" +
+        exampleXml = "<posts>" +
                 "<row Id=\"1\" " +
                 "AcceptedAnswerId=\"51\" " +
                 "Score=\"4\" " +
@@ -66,7 +65,7 @@ public class XMLAnalysisServiceTest {
                 "</posts>";
 
         //when
-        InputStream inputStream = new ByteArrayInputStream(exampleXML.getBytes(StandardCharsets.UTF_8));
+        InputStream inputStream = new ByteArrayInputStream(exampleXml.getBytes(StandardCharsets.UTF_8));
         Analysis analysis = xmlAnalysisService.readFromInputStream(inputStream);
 
         //then
@@ -74,9 +73,9 @@ public class XMLAnalysisServiceTest {
     }
 
     @Test
-    public void XMLAnalysisServiceTestLastPostWithoutCreationDate() throws IOException, XMLStreamException {
+    public void xmlAnalysisServiceTestLastPostWithoutCreationDate() throws XMLStreamException {
         //given
-        exampleXML = "<posts>" +
+        exampleXml = "<posts>" +
                 "<row Id=\"1\" " +
                 "AcceptedAnswerId=\"51\" " +
                 "CreationDate=\"2016-01-12T18:45:19.963\" " +
@@ -89,7 +88,7 @@ public class XMLAnalysisServiceTest {
                 "</posts>";
 
         //when
-        InputStream inputStream = new ByteArrayInputStream(exampleXML.getBytes(StandardCharsets.UTF_8));
+        InputStream inputStream = new ByteArrayInputStream(exampleXml.getBytes(StandardCharsets.UTF_8));
         Analysis analysis = xmlAnalysisService.readFromInputStream(inputStream);
 
         //then
@@ -97,9 +96,9 @@ public class XMLAnalysisServiceTest {
     }
 
     @Test
-    public void XMLAnalysisServiceTestTwoPostsOneWithoutScore() throws IOException, XMLStreamException {
+    public void xmlAnalysisServiceTestTwoPostsOneWithoutScore() throws XMLStreamException {
         //given
-        exampleXML = "<posts>" +
+        exampleXml = "<posts>" +
                 "<row Id=\"1\" " +
                 "AcceptedAnswerId=\"51\" " +
                 "CreationDate=\"2016-01-12T18:45:19.963\" " +
@@ -112,7 +111,7 @@ public class XMLAnalysisServiceTest {
                 "</posts>";
 
         //when
-        InputStream inputStream = new ByteArrayInputStream(exampleXML.getBytes(StandardCharsets.UTF_8));
+        InputStream inputStream = new ByteArrayInputStream(exampleXml.getBytes(StandardCharsets.UTF_8));
         Analysis analysis = xmlAnalysisService.readFromInputStream(inputStream);
 
         //then
@@ -120,9 +119,9 @@ public class XMLAnalysisServiceTest {
     }
 
     @Test
-    public void XMLAnalysisServiceTestTwoPostsOneWithoutId() throws IOException, XMLStreamException {
+    public void xmlAnalysisServiceTestTwoPostsOneWithoutId() throws XMLStreamException {
         //given
-        exampleXML = "<posts>" +
+        exampleXml = "<posts>" +
                 "<row Id=\"1\" " +
                 "AcceptedAnswerId=\"51\" " +
                 "CreationDate=\"2016-01-12T18:45:19.963\" " +
@@ -136,7 +135,7 @@ public class XMLAnalysisServiceTest {
                 "</posts>";
 
         //when
-        InputStream inputStream = new ByteArrayInputStream(exampleXML.getBytes(StandardCharsets.UTF_8));
+        InputStream inputStream = new ByteArrayInputStream(exampleXml.getBytes(StandardCharsets.UTF_8));
         Analysis analysis = xmlAnalysisService.readFromInputStream(inputStream);
 
         //then
@@ -145,12 +144,12 @@ public class XMLAnalysisServiceTest {
     }
 
     @Test
-    public void XMLAnalysisServiceTestNoPosts() throws IOException, XMLStreamException {
+    public void xmlAnalysisServiceTestNoPosts() throws XMLStreamException {
         //given
-        exampleXML = "<posts></posts>";
+        exampleXml = "<posts></posts>";
 
         //when
-        InputStream inputStream = new ByteArrayInputStream(exampleXML.getBytes(StandardCharsets.UTF_8));
+        InputStream inputStream = new ByteArrayInputStream(exampleXml.getBytes(StandardCharsets.UTF_8));
         Analysis analysis = xmlAnalysisService.readFromInputStream(inputStream);
 
         //then
@@ -162,12 +161,12 @@ public class XMLAnalysisServiceTest {
     }
 
     @Test(expected = XMLStreamException.class)
-    public void XMLAnalysisTestInvalidXML() throws IOException, XMLStreamException {
+    public void xmlAnalysisTestInvalidXML() throws XMLStreamException {
         //given
-        exampleXML = "asfsa98fyds987yf";
+        exampleXml = "asfsa98fyds987yf";
 
         //when
-        InputStream inputStream = new ByteArrayInputStream(exampleXML.getBytes(StandardCharsets.UTF_8));
+        InputStream inputStream = new ByteArrayInputStream(exampleXml.getBytes(StandardCharsets.UTF_8));
 
         //then
         Analysis analysis = xmlAnalysisService.readFromInputStream(inputStream);
